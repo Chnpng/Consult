@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PJ Line</title>
+  <style>
+    button {
+      background-color: #7571eb4b;
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:hover {
+      opacity: 0.8;
+    }
+  </style>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body>
+  <h1>ยินดีต้อนรับ</h1>
+  <button id="joinBtn">สมัครสมาชิก </button>
+  <button id="promoBtn">สอบถามปรึกษา</button>
+  <button id="infoBtn">ต้องการแก้ไขข้อมูลสมาชิก</button>
+
+  <script>
+    async function main() {
+      await liff.init({ liffId: "2006172571-8jbd6Mdd" });
+      
+      // ตรวจสอบว่าผู้ใช้เข้าสู่ระบบหรือยัง
+      if (!liff.isLoggedIn()) {
+        liff.login();
+      }
+
+      document.getElementById('joinBtn').onclick = function () {
+        sendMessage("สมัครสมาชิก");
+      };
+
+      document.getElementById('promoBtn').onclick = function () {
+        sendMessage("สอบถามปรึกษา");
+      };
+
+      document.getElementById('infoBtn').onclick = function () {
+        sendMessage("ข้อมูลสมาชิก");
+      };
+    }
+
+    function sendMessage(text) {
+      if (liff.isInClient()) {
+        liff.sendMessages([{
+          'type': 'text',
+          'text': text
+        }]).then(function () {
+          liff.closeWindow();
+        }).catch(function (error) {
+          console.error('Error sending message:', error);
+        });
+      }
+    }
+
+    main();
+  </script>
+</body>
+</html>
